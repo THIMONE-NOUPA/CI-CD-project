@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        SONARQUBE_SERVER = 'Sonar-uk'
+        SONARQUBE_SERVER = 'Sonar'
     }
     stages {
         stage('Cloning GitHub Repo') {
@@ -33,7 +33,7 @@ pipeline {
                 SONAR_TOKEN = credentials('sonarqube-auth-token')
             }
             steps {
-                withSonarQubeEnv('Sonar-uk') {
+                withSonarQubeEnv('Sonar') {
                     sh '''
                         export SONAR_SCANNER_OPTS="-Dsonar.cache.directory=/tmp/.sonar/cache"
                         sonar-scanner \
@@ -42,6 +42,7 @@ pipeline {
                         -Dsonar.sources=src \
                         -Dsonar.host.url=https://sonarqube.devopseasylearning.uk/ \
                         -Dsonar.login=$SONAR_TOKEN
+                        -X
                     '''
                 }
             }
