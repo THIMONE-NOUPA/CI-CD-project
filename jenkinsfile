@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        SONARQUBE_SERVER = 'Sonar-uk' // Nom de votre serveur SonarQube configuré dans Jenkins
+        SONARQUBE_SERVER = 'Sonar-uk'
     }
     stages {
         stage('Cloning GitHub Repo') {
@@ -14,8 +14,8 @@ pipeline {
         stage('Maven Package') {
             agent {
                 docker {
-                    image 'maven:3.8.4-openjdk-11' // Maven avec JDK 11
-                    args '-v /root/.m2:/root/.m2' // Monter le repository Maven local
+                    image 'maven:3.8.4-openjdk-11'
+                    args '-v /root/.m2:/root/.m2'
                 }
             }
             steps {
@@ -25,16 +25,17 @@ pipeline {
         stage('SonarQube Analysis') {
             agent {
                 docker {
-                    image 'sonarsource/sonar-scanner-cli:latest' // Image Docker contenant le scanner SonarQube
-                    args '-v /root/.sonar:/root/.sonar' // Monter le répertoire local pour stocker les fichiers temporaires SonarQube
+                    image 'sonarsource/sonar-scanner-cli:5.0'
+                    args '-v /root/.sonar:/root/.sonar'
                 }
             }
             environment {
-                SONAR_TOKEN = credentials('sonarqube-auth-token') // Jeton d'authentification SonarQube stocké dans Jenkins Credentials
+                SONAR_TOKEN = credentials('sonarqube-auth-token')
             }
             steps {
                 withSonarQubeEnv('Sonar-uk') {
                     sh '''
+                        export SONAR_SCANNER_OPTS="-Dsonar.cache.directory=/tmp/.sonar/cache"
                         sonar-scanner \
                         -Dsonar.projectKey=CI-CD-project \
                         -Dsonar.projectName=CI-CD-project \
