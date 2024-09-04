@@ -37,6 +37,7 @@ pipeline {
                     sh '''
                         sonar-scanner \
                         -Dsonar.projectKey=CI-CD-project \
+                        -Dsonar.projectName=CI-CD-project \
                         -Dsonar.sources=src \
                         -Dsonar.host.url=https://sonarqube.devopseasylearning.uk/ \
                         -Dsonar.login=$SONAR_TOKEN
