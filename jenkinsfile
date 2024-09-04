@@ -1,15 +1,14 @@
 pipeline {
     agent any
     stages {
-        stage('Cloning GitHub Repo') {  // Ajout des guillemets autour du nom de l'étape
+        stage('Cloning GitHub Repo') {
             steps {
-                checkout scmGit(branches: [[name: '*/main']], 
-                               extensions: [], 
-                               userRemoteConfigs: [[credentialsId: 'githubid', 
-                                                   url: 'https://github.com/THIMONE-NOUPA/CI-CD-project.git']])
+                checkout([$class: 'GitSCM', branches: [[name: '*/main']], 
+                          userRemoteConfigs: [[credentialsId: 'githubid', 
+                                               url: 'https://github.com/THIMONE-NOUPA/CI-CD-project.git']]])
             }
         }
-        stage('Maven Package') {  // Ajout des guillemets autour du nom de l'étape
+        stage('Maven Package') {
             agent {
                 docker {
                     image 'maven:3.8.4-adoptopenjdk-11' // Maven with JDK 11
