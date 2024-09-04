@@ -11,10 +11,10 @@ pipeline {
                                                url: 'https://github.com/THIMONE-NOUPA/CI-CD-project.git']]])
             }
         }
-        stage('Maven test') {
+        stage('Maven Package') {
             agent {
                 docker {
-                    image 'maven:3.8.4-adoptopenjdk-11' // Maven avec JDK 11
+                    image 'maven:3.8.4-openjdk-11' // Maven avec JDK 11
                     args '-v /root/.m2:/root/.m2' // Monter le repository Maven local
                 }
             }
